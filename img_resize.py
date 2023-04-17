@@ -7,10 +7,8 @@ import cv2
 face_cascades = cv2.CascadeClassifier('FaceRecog\haarcascades\haarcascade_frontalface_default.xml')
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-image_dir = os.path.join(BASE_DIR, "appliData")
+image_dir = os.path.join(BASE_DIR, "appliData/male1")
 save_target_dir = os.path.join(BASE_DIR, "resized_images")
-
-
 
 
 
@@ -19,7 +17,7 @@ for root, dirs, files in os.walk(image_dir):
         if file.endswith("png") or file.endswith("jpg"):
                 path = os.path.join(root, file)
                 img = cv2.imread(path)
-                faces = face_cascades.detectMultiScale(img,1.3,4)
+                faces = face_cascades.detectMultiScale(img,1.4,5)
 
                 for (x1,y1,w,h) in faces:
                 

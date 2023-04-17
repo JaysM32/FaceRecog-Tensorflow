@@ -37,8 +37,8 @@ class L1Dist(Layer):
     def call(self, input_embedding, validation_embedding):
         return tf.math.abs(input_embedding - validation_embedding)
     
-# Load model 
-siamese_model = tf.keras.models.load_model('FaceRecog/tensorflow/siamesemodelinitialtesting.h5', 
+# Load model (used model(April 16 - 2023): https://drive.google.com/file/d/17Hr9uQuhg91-CR01HWPNrU5uYxleq2uP/view?usp=share_link)
+siamese_model = tf.keras.models.load_model('FaceRecog/tensorflow/siamesemodelhometesting100pics.h5', 
                                    custom_objects={'L1Dist':L1Dist, 'BinaryCrossentropy':tf.losses.BinaryCrossentropy}, compile=False)
 
 
@@ -46,7 +46,7 @@ def verify(model, detection_threshold, verification_threshold):
     # Build results array
     results = []
     for image in os.listdir(os.path.join('FaceRecog/tensorflow/appliData', 'verif_images')):
-        input_img = preprocess(os.path.join('FaceRecog/tensorflow/appliData', 'inp_images', 'input_image.jpg'))
+        input_img = preprocess(os.path.join('FaceRecog/tensorflow/appliData', 'inp_images', 'input_image.png'))
         validation_img = preprocess(os.path.join('FaceRecog/tensorflow/appliData', 'verif_images', image))
         
         # Make Predictions 
@@ -63,7 +63,11 @@ def verify(model, detection_threshold, verification_threshold):
     return results, verified
 
 
-#VIDEO TEST USING openCV
+results, verified = verify(siamese_model, 0.8, 0.8)
+print(verified)
+
+
+"""#VIDEO TEST USING openCV
 cap = cv2.VideoCapture(0)
 while cap.isOpened():
     ret, frame = cap.read()
@@ -73,7 +77,7 @@ while cap.isOpened():
     
     # Verification trigger
     if cv2.waitKey(10) & 0xFF == ord('v'):
-        # Save input image to application_data/input_image folder 
+        # Save input image to applidata/input_image folder 
 #         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 #         h, s, v = cv2.split(hsv)
 
@@ -92,4 +96,4 @@ while cap.isOpened():
     if cv2.waitKey(10) & 0xFF == ord('q'):
         break
 cap.release()
-cv2.destroyAllWindows()
+cv2.destroyAllWindows()"""
